@@ -7,6 +7,15 @@ doses = [30, 60, 90, 120, 150]
 index_dose = 1          
 total = 0
 nb_biberons = 0
+TYPE_BRUIT = "05"   
+
+
+
+SEUILS_BRUIT = (40, 100)       
+                     
+          
+MESURES_BRUIT = 10              
+DUREE_MUSIQUE = 60000    
 
 
 def confirmer_reset():
@@ -157,8 +166,26 @@ while True:
     sleep(50)
 
 
-# Code in a 'while True:' loop repeats forever
+
 while True:
     display.show(Image.HEART)
     sleep(1000)
     display.scroll('Hello')
+    
+def traiter_message():
+    recu = recevoir()
+    if recu and recu[0] == TYPE_ETAT:
+        lettre = recu[1]
+        if lettre == "T":
+            display.show("T")
+            music.play(ALARME)
+            sleep(1000)
+        elif lettre == "E" or lettre == "A":
+            display.show(lettre)
+            sleep(1500)
+        display.clear()
+    elif recu and recu[0] == TYPE_BRUIT:
+        if recu[1] == "C" or recu[1] == "M" or recu[1] == "F":
+            display.show(recu[1])        # bruit autour du bebe
+            sleep(1500)
+            display.clear()
